@@ -1,0 +1,1 @@
+python -m visdom.server -port 9891 -readonly
