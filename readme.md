@@ -1,4 +1,4 @@
-# D$^4$LCN: Learning Depth-Guided Convolutions for Monocular 3D Object Detection
+# D4LCN: Learning Depth-Guided Convolutions for Monocular 3D Object Detection
 
 Mingyu Ding, Yuqi Huo, Hongwei Yi, Zhe Wang, Jianping Shi, Zhiwu Lu, Ping Luo
 
