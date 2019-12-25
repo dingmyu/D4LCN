@@ -10,8 +10,11 @@ def dynamic_local_filtering(x, depth, dilated=1):
     padding = nn.ReflectionPad2d(dilated)  # ConstantPad2d(1, 0)
     pad_depth = padding(depth)
     n, c, h, w = x.size()
-    y = torch.cat((x[:, int(c/2):, :, :], x[:, :int(c/2), :, :]), dim=1)
-    x = x + y
+    # y = torch.cat((x[:, int(c/2):, :, :], x[:, :int(c/2), :, :]), dim=1)
+    # x = x + y
+    y = torch.cat((x[:, -1:, :, :], x[:, :-1, :, :]), dim=1)
+    z = torch.cat((x[:, -2:, :, :], x[:, :-2, :, :]), dim=1)
+    x = (x + y + z) / 3
     filter = pad_depth[:, :, dilated: dilated + h, dilated: dilated + w]
     for i in [-dilated, 0, dilated]:
         for j in [-dilated, 0, dilated]:
@@ -61,11 +64,21 @@ class RPN(nn.Module):
         self.depthnet = resnet.ResNetDilate(50)
 
         if self.adaptive_diated:
+            self.adaptive_softmax = nn.Softmax(dim=3)
+
             self.adaptive_layers = nn.Sequential(
                 nn.AdaptiveMaxPool2d(3),
                 nn.Conv2d(512, 512 * 3, 3, padding=0),
             )
-            self.adaptive_softmax = nn.Softmax(dim=3)
+            self.adaptive_bn = nn.BatchNorm2d(512)
+            self.adaptive_relu = nn.ReLU(inplace=True)
+
+            self.adaptive_layers1 = nn.Sequential(
+                nn.AdaptiveMaxPool2d(3),
+                nn.Conv2d(1024, 1024 * 3, 3, padding=0),
+            )
+            self.adaptive_bn1 = nn.BatchNorm2d(1024)
+            self.adaptive_relu1 = nn.ReLU(inplace=True)
 
         if self.deformable:
             self.deform_layer = DeformConv2d(512, 512, 3, padding=1, bias=False, modulation=True)
@@ -147,6 +160,8 @@ class RPN(nn.Module):
             x = dynamic_local_filtering(x, depth, dilated=1) * weight[:, :, :, 0:1] \
                 + dynamic_local_filtering(x, depth, dilated=2) * weight[:, :, :, 1:2] \
                 + dynamic_local_filtering(x, depth, dilated=3) * weight[:, :, :, 2:3]
+            x = self.adaptive_bn(x)
+            x = self.adaptive_relu(x)
         else:
             x = dynamic_local_filtering(x, depth, dilated=1) + dynamic_local_filtering(x, depth, dilated=2) + dynamic_local_filtering(x, depth, dilated=3)
 
@@ -158,8 +173,17 @@ class RPN(nn.Module):
 
         x = self.base.layer3(x)
         depth = self.depthnet.layer3(depth)
-        # x = dynamic_local_filtering(x, depth, dilated=1) + dynamic_local_filtering(x, depth, dilated=2)  + dynamic_local_filtering(x, depth, dilated=3)
-        x = x * depth
+
+        if self.adaptive_diated:
+            weight = self.adaptive_layers1(x).reshape(-1, 1024, 1, 3)
+            weight = self.adaptive_softmax(weight)
+            x = dynamic_local_filtering(x, depth, dilated=1) * weight[:, :, :, 0:1] \
+                + dynamic_local_filtering(x, depth, dilated=2) * weight[:, :, :, 1:2] \
+                + dynamic_local_filtering(x, depth, dilated=3) * weight[:, :, :, 2:3]
+            x = self.adaptive_bn1(x)
+            x = self.adaptive_relu1(x)
+        else:
+            x = x * depth
 
         x = self.base.layer4(x)
         depth = self.depthnet.layer4(depth)

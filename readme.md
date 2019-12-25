@@ -2,6 +2,8 @@
 
 Mingyu Ding, Yuqi Huo, Hongwei Yi, Zhe Wang, Jianping Shi, Zhiwu Lu, Ping Luo
 
+![image](https://github.com/dingmyu/D4LCN/blob/master/demo.gif)
+
 ## Introduction
 
 Our framework is implemented and tested with Ubuntu 16.04, CUDA 8.0/9.0, Python 3, Pytorch 0.4/1.0/1.1, NVIDIA Tesla V100/TITANX GPU. 
@@ -95,7 +97,7 @@ sh train.sh
 
 ## Testing
 
-We provide the [model](https://drive.google.com/open?id=1RiPX-CiSEf1L1NZsWzATvLB7XXBFMsCA) and [config file](https://drive.google.com/open?id=1RfV-Q3O0GxDzazNHoWnfk5Vz5y-mbdaB) on the val1 data split available to download. This model is a simple model which applies D$^4$LCN to the block 2 but achieves high performance. You can also add more D$^4$LCN modules to get better results.
+We provide the [weights](https://drive.google.com/open?id=1RiPX-CiSEf1L1NZsWzATvLB7XXBFMsCA), [model](https://drive.google.com/open?id=1tXCv8y6eDY8ej2ElfPlbJjp3vlIg9PXN) and [config file](https://drive.google.com/open?id=1RfV-Q3O0GxDzazNHoWnfk5Vz5y-mbdaB) on the val1 data split available to download. This model is a simple model which applies D4LCN to the block 2 but achieves high performance. You can also add more D4LCN modules to get better results.
 
 Testing requires paths to the configuration file and model weights, exposed variables near the top **scripts/test.py**. To test a configuration and model, simply update the variables and run the test file as below. 
 
@@ -109,4 +111,4 @@ We thank [Garrick Brazil](https://github.com/garrickbrazil/M3D-RPN) for his grea
 
 ## Contact
 
-For questions regarding D$^4$LCN, feel free to post here or directly contact the authors (mingyuding@hku.hk).
+For questions regarding D4LCN, feel free to post here or directly contact the authors (mingyuding@hku.hk).
