@@ -15,12 +15,13 @@ def dynamic_local_filtering(x, depth, dilated=1):
     y = torch.cat((x[:, -1:, :, :], x[:, :-1, :, :]), dim=1)
     z = torch.cat((x[:, -2:, :, :], x[:, :-2, :, :]), dim=1)
     x = (x + y + z) / 3
-    filter = pad_depth[:, :, dilated: dilated + h, dilated: dilated + w]
+    pad_x = padding(x)
+    filter = (pad_depth[:, :, dilated: dilated + h, dilated: dilated + w] * pad_x[:, :, dilated: dilated + h, dilated: dilated + w]).clone()
     for i in [-dilated, 0, dilated]:
         for j in [-dilated, 0, dilated]:
-            if i != 0 and j != 0:
-                filter += pad_depth[:, :, dilated + i: dilated + i + h, dilated + j: dilated + j + w]
-    return x * filter / 9
+            if i != 0 or j != 0:
+                filter += (pad_depth[:, :, dilated + i: dilated + i + h, dilated + j: dilated + j + w] * pad_x[:, :, dilated + i: dilated + i + h, dilated + j: dilated + j + w]).clone()
+    return filter / 9
 
 class RPN(nn.Module):
 

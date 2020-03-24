@@ -97,7 +97,7 @@ sh train.sh
 
 ## Testing
 
-We provide the [weights](https://drive.google.com/open?id=1RiPX-CiSEf1L1NZsWzATvLB7XXBFMsCA), [model](https://drive.google.com/open?id=1tXCv8y6eDY8ej2ElfPlbJjp3vlIg9PXN) and [config file](https://drive.google.com/open?id=1RfV-Q3O0GxDzazNHoWnfk5Vz5y-mbdaB) on the val1 data split available to download. This model is a simple model which applies D4LCN to the block 2 but achieves high performance. You can also add more D4LCN modules to get better results.
+We provide the [weights](https://drive.google.com/file/d/1EWrl6-brmrqKJakiTx5tGOE8DA5bdbbr), [model](https://drive.google.com/file/d/1VsmSdy7K9Bnbu6_B7Uvc6Z99ce_tqqyq) and [config file](https://drive.google.com/open?id=1RfV-Q3O0GxDzazNHoWnfk5Vz5y-mbdaB) on the val1 data split available to download.
 
 Testing requires paths to the configuration file and model weights, exposed variables near the top **scripts/test.py**. To test a configuration and model, simply update the variables and run the test file as below. 
 
