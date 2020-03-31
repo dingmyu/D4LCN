@@ -1,4 +1,4 @@
-# D4LCN: Learning Depth-Guided Convolutions for Monocular 3D Object Detection
+# D4LCN: Learning Depth-Guided Convolutions for Monocular 3D Object Detection (CVPR 2020)
 
 Mingyu Ding, Yuqi Huo, Hongwei Yi, Zhe Wang, Jianping Shi, Zhiwu Lu, Ping Luo
 
