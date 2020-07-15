@@ -10,11 +10,12 @@ Our framework is implemented and tested with Ubuntu 16.04, CUDA 8.0/9.0, Python 
 
 If you find our work useful in your research please consider citing our paper:
 
-    @article{ding2019learning,
+    @inproceedings{ding2020learning,
       title={Learning Depth-Guided Convolutions for Monocular 3D Object Detection},
-      author={Ding, Mingyu and Huo, Yuqi and Yi, Hongwei and Wang, Zhe and  Shi, Jianping and Lu, Zhiwu and Luo, Ping},
-      journal={arXiv preprint arXiv:1912.04799},
-      year={2019}
+      author={Ding, Mingyu and Huo, Yuqi and Yi, Hongwei and Wang, Zhe and Shi, Jianping and Lu, Zhiwu and Luo, Ping},
+      booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+      pages={11672--11681},
+      year={2020}
     }
 
 ## Requirements
